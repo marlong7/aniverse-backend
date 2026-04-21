@@ -1,10 +1,13 @@
-const jwt = require('jsonwebtoken');
+function getJwt() {
+  return require('jsonwebtoken');
+}
 
 function getJwtSecret() {
   return process.env.JWT_SECRET || 'dev_secret_change_me';
 }
 
 function signToken(user) {
+  const jwt = getJwt();
   return jwt.sign(
     {
       id: user.id,
@@ -24,6 +27,7 @@ function readAuth(req) {
 
 function verifyTokenFromReq(req) {
   try {
+    const jwt = getJwt();
     const token = readAuth(req);
     if (!token) return null;
     return jwt.verify(token, getJwtSecret());
